@@ -1,0 +1,284 @@
+# 地震预警服务配置
+
+# WebSocket连接地址
+websocket_url: "wss://ws.fanstudio.tech/all"
+
+# 关注的地区列表
+# 格式: 城市名称: 最小震级
+# 例如: "北京": 3.0 表示关注北京地区3.0级以上的地震
+watch_areas:
+  "四川": 4.0
+  "云南": 4.0
+  "西藏": 4.5
+  "青海": 4.5
+  "新疆": 4.5
+  "甘肃": 4.0
+  "陕西": 3.5
+  "宁夏": 3.5
+  "内蒙古": 3.5
+  "山西": 3.5
+  "河北": 3.5
+  "河南": 3.5
+  "山东": 3.5
+  "辽宁": 3.5
+  "吉林": 3.5
+  "黑龙江": 3.5
+  "江苏": 3.5
+  "安徽": 3.5
+  "湖北": 3.5
+  "湖南": 3.5
+  "江西": 3.5
+  "浙江": 3.5
+  "福建": 3.5
+  "台湾": 4.0
+  "广东": 3.5
+  "广西": 3.5
+  "海南": 3.5
+  "贵州": 3.5
+  "重庆": 3.5
+  "上海": 3.5
+  "天津": 3.5
+  "北京": 3.5
+  "香港": 3.5
+  "澳门": 3.5
+
+# 消息类型配置
+message_types:
+  # 启用的消息类型
+  enabled:
+    - "earthquake" # 地震消息
+    - "weatheralarm" # 气象预警
+    - "tsunami" # 海啸预警
+    # 可以根据需要添加更多类型
+
+# 来源管理配置
+sources:
+  # 中国气象局气象预警
+  weatheralarm:
+    enabled: true
+    type: "weatheralarm"
+    # 气象预警配置
+    weatheralarm:
+      # 关注的预警级别: 红色, 橙色, 黄色, 蓝色
+      levels: ["红色", "橙色", "黄色"]
+      # 关注的预警类型: 大风, 暴雨, 高温等
+      alert_types: ["大风", "暴雨", "高温", "寒潮"]
+      # 关注的地区
+      areas: ["四川", "云南", "重庆"]
+
+  # 自然资源部海啸预警
+  tsunami:
+    enabled: true
+    type: "tsunami"
+    # 海啸预警配置
+    tsunami:
+      # 关注的预警级别
+      levels: ["红色", "橙色", "黄色", "蓝色", "解除"]
+      # 关注的地区
+      areas: ["福建", "广东", "海南", "台湾"]
+
+  # 中国地震台网地震信息
+  cenc:
+    enabled: true
+    type: "earthquake"
+    # 地震配置
+    earthquake:
+      # 关注的最小震级
+      min_magnitude: 3.5
+      # 关注的地区
+      areas:
+        [
+          "四川",
+          "云南",
+          "西藏",
+          "青海",
+          "新疆",
+          "甘肃",
+          "陕西",
+          "宁夏",
+          "内蒙古",
+          "山西",
+          "河北",
+          "河南",
+          "山东",
+          "辽宁",
+          "吉林",
+          "黑龙江",
+          "江苏",
+          "安徽",
+          "湖北",
+          "湖南",
+          "江西",
+          "浙江",
+          "福建",
+          "台湾",
+          "广东",
+          "广西",
+          "海南",
+          "贵州",
+          "重庆",
+          "上海",
+          "天津",
+          "北京",
+          "香港",
+          "澳门",
+        ]
+
+  # 中国地震预警网地震信息
+  cea:
+    enabled: true
+    type: "earthquake"
+    earthquake:
+      min_magnitude: 3.0
+      areas: ["四川", "云南", "重庆"]
+
+  # 中国地震预警网各省级网地震预警
+  cea-pr:
+    enabled: true
+    type: "earthquake"
+    earthquake:
+      min_magnitude: 2.5
+      areas: ["四川", "云南", "重庆"]
+
+  # 四川省地震局地震预警
+  sichuan:
+    enabled: true
+    type: "earthquake"
+    earthquake:
+      min_magnitude: 3.0
+      areas: ["四川"]
+
+  # 成都高新减灾研究所地震预警
+  icl:
+    enabled: true
+    type: "earthquake"
+    earthquake:
+      min_magnitude: 2.5
+      areas: ["四川", "云南", "重庆"]
+
+  # 宁夏自治区地震局地震信息
+  ningxia:
+    enabled: true
+    type: "earthquake"
+    earthquake:
+      min_magnitude: 3.0
+      areas: ["宁夏"]
+
+  # 广西壮族自治区地震局地震信息
+  guangxi:
+    enabled: true
+    type: "earthquake"
+    earthquake:
+      min_magnitude: 3.0
+      areas: ["广西"]
+
+  # 山西省地震局地震信息
+  shanxi:
+    enabled: true
+    type: "earthquake"
+    earthquake:
+      min_magnitude: 3.0
+      areas: ["山西"]
+
+  # 北京市地震局地震信息
+  beijing:
+    enabled: true
+    type: "earthquake"
+    earthquake:
+      min_magnitude: 3.0
+      areas: ["北京", "河北", "天津"]
+
+  # 台湾省气象署地震预警
+  cwa:
+    enabled: true
+    type: "earthquake"
+    earthquake:
+      min_magnitude: 4.0
+      areas: ["台湾"]
+
+  # 香港天文台地震信息
+  hko:
+    enabled: true
+    type: "earthquake"
+    earthquake:
+      min_magnitude: 4.0
+      areas: ["香港", "广东", "福建"]
+
+  # 美国地质调查局地震信息
+  usgs:
+    enabled: true
+    type: "earthquake"
+    earthquake:
+      min_magnitude: 5.0
+      areas: [] # 全球范围，关注较大震级
+
+  # 欧洲地中海地震中心地震信息
+  emsc:
+    enabled: true
+    type: "earthquake"
+    earthquake:
+      min_magnitude: 5.0
+      areas: [] # 全球范围，关注较大震级
+
+  # 德国地学研究中心地震信息
+  gfz:
+    enabled: true
+    type: "earthquake"
+    earthquake:
+      min_magnitude: 5.0
+      areas: [] # 全球范围，关注较大震级
+  # 法国地震台网地震信息
+  bcsf:
+    enabled: false # 禁用该来源
+    type: "earthquake"
+    earthquake:
+      min_magnitude: 4.0
+      areas: []
+  # 美国ShakeAlert地震预警
+  sa:
+    enabled: true
+    type: "earthquake"
+    earthquake:
+      min_magnitude: 5.0
+      areas: [] # 全球范围，关注较大震级
+  # 巴西圣保罗大学地震信息
+  usp:
+    enabled: true
+    type: "earthquake"
+    earthquake:
+      min_magnitude: 5.0
+      areas: [] # 全球范围，关注较大震级
+  # 韩国气象厅地震信息
+  kma:
+    enabled: true
+    type: "earthquake"
+    earthquake:
+      min_magnitude: 5.0
+      areas: [] # 全球范围，关注较大震级
+  # FSSN 地震速报信息
+  fssn:
+    enabled: true
+    type: "earthquake"
+    earthquake:
+      min_magnitude: 5.0
+      areas: [] # 全球范围，关注较大震级
+
+# 通知配置
+notification:
+  # 是否启用桌面通知
+  enable_desktop: true
+  # 是否记录日志到文件
+  enable_log: true
+  # 日志文件路径
+  log_file: "earthquake_log.txt"
+  # 是否在控制台显示通知
+  enable_console: true
+  # Bark通知配置
+  enable_bark: false
+  # Bark服务器地址
+  bark_url: "https://api.day.app"
+  # Bark设备密钥
+  bark_key: "your-bark-device-key"
+  # 日志文件控制配置
+  log_max_size: 10 # 日志文件最大大小，单位MB
+  log_max_days: 30 # 日志文件最大保存天数

@@ -1,0 +1,25 @@
+{
+  "name": "earthquake-alert",
+  "version": "1.0.0",
+  "description": "地震预警服务，通过WebSocket获取地震信息并通知关注地区",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "ws": "^8.14.2",
+    "node-notifier": "^10.0.1",
+    "yaml": "^2.3.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": [
+    "earthquake",
+    "alert",
+    "websocket"
+  ],
+  "author": "",
+  "license": "MIT"
+}

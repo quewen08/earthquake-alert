@@ -1,0 +1,75 @@
+{
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "javascript.format.semicolons": "remove",
+  "typescript.format.semicolons": "remove",
+  "cSpell.words": [
+    "ACCESSKEYID",
+    "ACCESSKEYSECRET",
+    "alipay",
+    "ALIYUN",
+    "aliyuncs",
+    "Antd",
+    "antv",
+    "autoresize",
+    "axios",
+    "AXIOSKEY",
+    "bignumber",
+    "bodyparser",
+    "cascader",
+    "chatwoot",
+    "deepmerge",
+    "echart",
+    "echarts",
+    "evented",
+    "flashbase",
+    "flowable",
+    "hoverable",
+    "LODASHKEY",
+    "partytown",
+    "pinia",
+    "Popout",
+    "sider",
+    "signin",
+    "signout",
+    "skus",
+    "smses",
+    "splitpanes",
+    "spus",
+    "subcompany",
+    "sysconfig",
+    "tsyringe",
+    "wechat",
+    "weixin",
+    "wxapp",
+    "wxauto",
+    "wxerror",
+    "wxnew",
+    "zipcode"
+  ],
+  "html.format.wrapAttributes": "force-aligned",
+  // 换行符 :LF
+  "files.eol": "\n",
+  // 禁止插件检查更新
+  "extensions.autoCheckUpdates": false,
+  // 配置Vue格式化文件为Vue.volar  结合 extensions.json 配置的插件版本
+  "[vue]": {
+    "editor.defaultFormatter": "Vue.volar"
+  },
+  // 配置ts文件格式化规则为vscode的ts语法
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  // 配置ts文件格式化规则为vscode的ts语法
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  // 保存时格式化
+  "editor.formatOnSave": true,
+  // 保存时执行的动作
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "never",
+    "source.fixAll.eslint": "never",
+    "source.organizeImports": "never",
+  },
+}
