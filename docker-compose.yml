@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: earthquake-alert
+    image: quewen08/earthquake-alert:latest
+    user: "1000:1000" # 挂载主机用户到容器
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - /etc/localtime:/etc/localtime:ro # 挂载主机时间到容器
+      - /data/earthquake-alert/config.yaml:/app/config.yaml # 挂载主机配置文件到容器
+      - /data/earthquake-alert/earthquake_log.txt:/app/earthquake_log.txt # 挂载主机日志文件到容器
+      - /data/earthquake-alert/sent_messages.json:/app/sent_messages.json # 挂载主机已发送消息文件到容器
+    restart: unless-stopped
+    tty: true # 保持容器运行

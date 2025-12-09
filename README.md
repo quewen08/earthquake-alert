@@ -1,207 +1,230 @@
-# 地震预警服务
+ENGLISH | [中文](README-zh.md)
 
-一个基于WebSocket的综合预警服务，可以实时获取地震、气象和海啸等预警信息，并在关注条件满足时发送通知。
+# Earthquake Alert Service
 
-## 功能特性
+A comprehensive alert service based on WebSocket that can real-time obtain earthquake, meteorological, tsunami and other alert information, and send notifications when attention conditions are met.
 
-- 实时连接预警WebSocket服务
-- 支持多种消息类型：地震、气象预警、海啸预警
-- 精细化的来源管理，可单独配置每个数据源
-- 可配置关注地区和阈值条件
-- 多种通知方式：桌面通知、控制台日志、文件日志和Bark通知
-- 智能消息去重，避免重复通知
-- 支持Docker容器化部署
+## Features
 
-## 快速开始
+- Real-time connection to alert WebSocket service
+- Support for multiple message types: earthquake, weather alarm, tsunami alert
+- Refined source management, can configure each data source individually
+- Configurable attention areas and threshold conditions
+- Multiple notification methods: desktop notification, console log, file log, and Bark notification
+- Intelligent message deduplication to avoid duplicate notifications
+- Message priority differentiation: Focus area alerts have highest priority
+- Time filtering functionality:
+  - 8:00-20:00: Send all eligible alerts
+  - 20:00-8:00 next day: Only send high-priority focus area alerts
+- Modular architecture design for easy maintenance and expansion
+- Support for Docker container deployment
 
-### 方法一：直接运行
+## Quick Start
 
-1. 安装依赖
+### Method 1: Run Directly
+
+1. Install dependencies
 ```bash
 npm install
 ```
 
-2. 配置关注内容（可选）
-编辑 `config.yaml` 文件，设置需要关注的消息类型、来源和条件：
+2. Configure attention content (optional)
+Edit the `config.yaml` file to set the message types, sources, and conditions you want to follow:
 ```yaml
-# 关注的地区列表（兼容旧配置）
+# Watch area list (compatible with old configuration)
 watch_areas:
-  "四川": 4.0
-  "云南": 4.0
+  "四川": 4.0  # Sichuan
+  "云南": 4.0  # Yunnan
 
-# 消息类型配置
+# Message type configuration
 message_types:
   enabled:
-    - "earthquake"      # 地震消息
-    - "weatheralarm"    # 气象预警
-    - "tsunami"         # 海啸预警
+    - "earthquake"      # Earthquake messages
+    - "weatheralarm"    # Weather alarm
+    - "tsunami"         # Tsunami alert
 
-# 来源管理配置
-# 可单独配置每个数据源的关注条件
+# Source management configuration
+# Can configure attention conditions for each data source individually
 ```
 
-3. 启动服务
+3. Start the service
 ```bash
 npm start
 ```
 
-### 方法二：使用Docker运行
+### Method 2: Run with Docker
 
-1. 构建Docker镜像
+#### Using Docker Commands
+
+1. Build Docker image
 ```bash
 docker build -t earthquake-alert .
 ```
 
-2. 运行Docker容器
+2. Run Docker container
 ```bash
-docker run -d --name earthquake-alert earthquake-alert
+docker run -d --name earthquake-alert -v ./config.yaml:/app/config.yaml -v ./earthquake_log.txt:/app/earthquake_log.txt -v ./sent_messages.json:/app/sent_messages.json --restart always earthquake-alert
 ```
 
-3. 查看日志
+3. View logs
 ```bash
 docker logs -f earthquake-alert
 ```
 
-## 配置说明
+#### Using Docker Compose (Recommended)
 
-配置文件 `config.yaml` 包含以下主要配置项：
+1. Ensure Docker Compose is installed
 
-### WebSocket连接
+2. Start service
+```bash
+docker-compose up -d
+```
+
+3. View logs
+```bash
+docker-compose logs -f
+```
+
+4. Stop service
+```bash
+docker-compose down
+```
+
+## Configuration Instructions
+
+The configuration file `config.yaml` contains the following main configuration items:
+
+### WebSocket Connection
 ```yaml
 websocket_url: "wss://ws.fanstudio.tech/all"
 ```
 
-### 关注地区（兼容旧配置）
-格式：`城市名称: 最小震级`
+### Watch Areas (Compatible with Old Configuration)
+Format: `City Name: Minimum Magnitude`
 ```yaml
 watch_areas:
-  "四川": 4.0  # 关注四川地区4.0级以上地震
-  "云南": 4.0  # 关注云南地区4.0级以上地震
+  "四川": 4.0  # Pay attention to earthquakes above 4.0 in Sichuan area
+  "云南": 4.0  # Pay attention to earthquakes above 4.0 in Yunnan area
 ```
 
-### 消息类型配置
+### Message Type Configuration
 ```yaml
 message_types:
-  # 启用的消息类型
+  # Enabled message types
   enabled:
-    - "earthquake"      # 地震消息
-    - "weatheralarm"    # 气象预警
-    - "tsunami"         # 海啸预警
-    # 可以根据需要添加更多类型
+    - "earthquake"      # Earthquake messages
+    - "weatheralarm"    # Weather alarm
+    - "tsunami"         # Tsunami alert
+    # More types can be added as needed
 ```
 
-### 来源管理配置
+### Source Management Configuration
 ```yaml
 sources:
-  # 中国气象局气象预警
+  # China Meteorological Administration weather alarm
   weatheralarm:
     enabled: true
     type: "weatheralarm"
-    # 气象预警配置
+    # Weather alarm configuration
     weatheralarm:
-      # 关注的预警级别: 红色, 橙色, 黄色, 蓝色
+      # Focus alert levels: Red, Orange, Yellow, Blue
       levels: ["红色", "橙色", "黄色"]
-      # 关注的预警类型: 大风, 暴雨, 高温等
+      # Focus alert types: Strong wind, heavy rain, high temperature, etc.
       alert_types: ["大风", "暴雨", "高温", "寒潮"]
-      # 关注的地区
-      areas: ["四川", "云南", "重庆"]
+      # Focus areas
+      areas: ["四川", "云南", "重庆"]  # Sichuan, Yunnan, Chongqing
   
-  # 自然资源部海啸预警
+  # Ministry of Natural Resources tsunami alert
   tsunami:
     enabled: true
     type: "tsunami"
-    # 海啸预警配置
+    # Tsunami alert configuration
     tsunami:
-      # 关注的预警级别
+      # Focus alert levels
       levels: ["红色", "橙色", "黄色", "蓝色", "解除"]
-      # 关注的地区
-      areas: ["福建", "广东", "海南", "台湾"]
+      # Focus areas
+      areas: ["福建", "广东", "海南", "台湾"]  # Fujian, Guangdong, Hainan, Taiwan
   
-  # 中国地震台网地震信息
+  # China Earthquake Network Center earthquake information
   cenc:
     enabled: true
     type: "earthquake"
-    # 地震配置
+    # Earthquake configuration
     earthquake:
-      # 关注的最小震级
+      # Minimum magnitude to focus on
       min_magnitude: 3.5
-      # 关注的地区
-      areas: ["四川", "云南", "重庆"]
+      # Focus areas
+      areas: ["四川", "云南", "重庆"]  # Sichuan, Yunnan, Chongqing
 ```
 
-### 通知配置
+### Notification Configuration
 ```yaml
 notification:
-  # 是否启用桌面通知
+  # Whether to enable desktop notification
   enable_desktop: true
-  # 是否记录日志到文件
+  # Whether to log to file
   enable_log: true
-  # 日志文件路径
+  # Log file path
   log_file: "earthquake_log.txt"
-  # 是否在控制台显示通知
+  # Whether to display notifications in console
   enable_console: true
-  # Bark通知配置
+  # Bark notification configuration
   enable_bark: true
-  # Bark服务器地址
+  # Bark server address
   bark_url: "https://api.day.app"
-  # Bark设备密钥
+  # Bark device key
   bark_key: "your-bark-device-key"
+  # Log file control configuration
+  log_max_size: 10  # Maximum log file size, unit: MB
+  log_max_days: 30  # Maximum log file retention days
 ```
 
-## 消息去重机制
+## Message Deduplication Mechanism
 
-服务会自动创建 `sent_messages.json` 文件存储已发送消息的唯一ID，避免：
-- 服务重启后重复发送相同消息
-- 同一消息被多次推送
+The service automatically creates a `sent_messages.json` file to store unique IDs of sent messages, avoiding:
+- Duplicate sending of the same message after service restart
+- Same message being pushed multiple times
 
-### 消息ID生成策略
-- **地震消息**：使用ID或地址+震级+时间组合
-- **气象预警**：使用标题+日期组合（同一天内相同预警不重复）
-- **海啸预警**：使用标题+日期组合（同一天内相同预警不重复）
-- **其他消息**：使用JSON字符串前100个字符作为标识
+### Message ID Generation Strategy
+- **Earthquake messages**: Use ID or combination of address + magnitude + time
+- **Weather alarms**: Use combination of title + date (same alarm on the same day will not be repeated)
+- **Tsunami alerts**: Use combination of title + date (same alert on the same day will not be repeated)
+- **Other messages**: Use the first 100 characters of JSON string as identifier
 
-### 管理已发送记录
-- 服务会自动管理记录，最多保留1000条最近消息
-- 可手动删除 `sent_messages.json` 文件重置记录
+### Manage Sent Records
+- The service automatically manages records, keeping a maximum of 1000 recent messages
+- You can manually delete the `sent_messages.json` file to reset records
 
-## Bark通知使用
+## Bark Notification Usage
 
-1. **安装Bark应用**：在iOS设备上安装Bark应用
-2. **获取设备密钥**：打开Bark应用获取设备密钥
-3. **配置Bark**：在 `config.yaml` 中设置Bark参数
-4. **接收通知**：符合条件的预警信息将通过Bark推送到您的iOS设备
+1. **Install Bark app**: Install Bark app on iOS device
+2. **Get device key**: Open Bark app to get device key
+3. **Configure Bark**: Set Bark parameters in `config.yaml`
+4. **Receive notifications**: Eligible alert information will be pushed to your iOS device via Bark
 
-## 数据来源
+## Data Sources
 
-本服务通过WebSocket连接到 `wss://ws.fanstudio.tech/all` 获取以下类型的预警信息：
+This service connects to `wss://ws.fanstudio.tech/all` via WebSocket to obtain the following types of alert information:
 
-- **地震消息**：中国地震台网、中国地震预警网等
-- **气象预警**：中国气象局
-- **海啸预警**：自然资源部
+- **Earthquake messages**: China Earthquake Network Center, China Earthquake Early Warning Network, etc.
+- **Weather alarms**: China Meteorological Administration
+- **Tsunami alerts**: Ministry of Natural Resources
 
-## 注意事项
+## Notes
 
-1. 确保网络连接稳定，以便实时接收预警信息
-2. 桌面通知功能可能需要系统权限，请根据系统提示进行设置
-3. Bark通知需要iOS设备和Bark应用支持
-4. 建议定期检查配置文件，更新关注条件
-5. 服务会自动重连WebSocket，如果连接中断
+1. Ensure stable network connection to receive real-time alert information
+2. Desktop notification function may require system permissions, please set according to system prompts
+3. Bark notification requires iOS device and Bark app support
+4. It is recommended to regularly check the configuration file to update attention conditions
+5. The service will automatically reconnect to WebSocket if the connection is interrupted
 
-## 许可证
+## License
 
 MIT License
 
-## 感谢
+## Acknowledgments
 
-- [FanStudio](https://www.fanstudio.tech/) 提供的地震预警数据接口
-- [中国地震台网](https://www.cenc.cn/) 提供的地震信息
-- [中国气象局](https://www.meteoswiss.admin.ch/) 提供的气象预警
-- [自然资源部](https://www.nrc.gov.cn/) 提供的海啸预警
-
-## 贡献
-
-欢迎提交Pull Request改进本项目！
-
-## 问题反馈
-
-如果您在使用过程中遇到问题，请通过[GitHub Issues](https://github.com/quewen08/earthquake-alert/issues)反馈。
+- [FanStudio](https://www.fanstudio.tech/) for providing the earthquake alert data interface
+- [China Earthquake Network Center](https://www.cenc.cn/) for providing earthquake information
+- [China Meteorological Administration](https://www.meteoswiss.admin.ch/) for providing weather alarms
+- [Ministry of Natural Resources](https://www.nrc.gov.cn/) for providing tsunami alerts

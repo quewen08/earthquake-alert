@@ -1,6 +1,6 @@
 {
   "name": "earthquake-alert",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "地震预警服务，通过WebSocket获取地震信息并通知关注地区",
   "main": "index.js",
   "scripts": {
@@ -20,6 +20,7 @@
     "alert",
     "websocket"
   ],
-  "author": "",
+  "author": "quewen08",
+  "url": "https://github.com/quewen08/earthquake-alert",
   "license": "MIT"
 }

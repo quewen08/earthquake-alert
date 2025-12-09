@@ -270,7 +270,7 @@ notification:
   # 是否记录日志到文件
   enable_log: true
   # 日志文件路径
-  log_file: "earthquake_log.txt"
+  log_file: "app.log"
   # 是否在控制台显示通知
   enable_console: true
   # Bark通知配置
@@ -279,6 +279,8 @@ notification:
   bark_url: "https://api.day.app"
   # Bark设备密钥
   bark_key: "your-bark-device-key"
+  # Bark通知分组
+  bark_group: "地震预警"
   # 日志文件控制配置
   log_max_size: 10 # 日志文件最大大小，单位MB
   log_max_days: 30 # 日志文件最大保存天数
