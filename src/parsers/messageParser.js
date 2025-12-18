@@ -13,7 +13,8 @@ function parseMessageData(data) {
       case "pong":
         // 忽略心跳包和pong消息
         console.log(`收到${parsed.type}消息`);
-        return null;
+        // 返回心跳消息，供websocketService处理
+        return { type: parsed.type };
 
       case "initial_all":
         // 处理包含多个数据的initial_all消息
@@ -57,7 +58,7 @@ function parseMessageData(data) {
         }
 
         // 返回消息数据数组
-        return messages.length > 0 ? messages : null;
+        return messages.length > 0 ? { messages: messages } : null;
 
       case "update":
         // 处理单个数据更新
@@ -89,7 +90,7 @@ function parseMessageData(data) {
             }
           }
 
-          return message ? [message] : null;
+          return message ? { messages: [message] } : null;
         }
         break;
 
