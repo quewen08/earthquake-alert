@@ -88,14 +88,18 @@ class WebSocketService {
     if (this.reconnectAttempts < this.maxReconnectAttempts) {
       this.reconnectAttempts++;
       logMessage(
-        `⏳ 尝试重新连接 (${this.reconnectAttempts}/${this.maxReconnectAttempts})...`
+        `⏳ 尝试重新连接 (${this.reconnectAttempts}/${this.maxReconnectAttempts})...`,
       );
 
       setTimeout(() => {
         this.connect();
       }, this.reconnectInterval);
     } else {
+      // 停止心跳检测
+      this.stopHeartbeat();
       logMessage("❌ 达到最大重连尝试次数，连接失败");
+      // 终止程序
+      process.exit(1);
     }
   }
 
@@ -176,7 +180,7 @@ class WebSocketService {
   handlePingTimeout() {
     this.missedPongs++;
     logMessage(
-      `⌛ 未收到pong消息，累计未收到次数: ${this.missedPongs}/${this.maxMissedPongs}`
+      `⌛ 未收到pong消息，累计未收到次数: ${this.missedPongs}/${this.maxMissedPongs}`,
     );
 
     if (this.missedPongs >= this.maxMissedPongs) {
